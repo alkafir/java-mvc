@@ -1,0 +1,8 @@
+build/
+dist/
+doc/
+lib/
+meta/
+build/
+*~
+*\#
