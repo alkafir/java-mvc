@@ -1,74 +1,66 @@
-<project name="mvc" default="build">
-	<!-- Version -->
-	<property name="version.number.major" value="1" />
-	<property name="version.number.minor" value="0" />
-	<property name="version.number" value="${version.number.major}.${version.number.minor}" />
-	<property name="version.phase" value="pre-alpha" />
-	<property name="version" value="${version.number}-${version.phase}" />
+<project name="mvc" default="compile">
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.version.major" value="0" />
+	<property name="project.version.minor" value="0" />
+	<property name="project.version.patch" value="0" />
+	<property name="project.version.phase" value="pre-alpha" />
+	<property name="project.version-shortest" value="${project.version.major}.${project.version.minor}" />
+	<property name="project.version-short" value="${project.version.major}.${project.version.minor}.${project.version.patch}" />
+	<property name="project.version" value="${project.version-shortest}-${project.version.phase}" />
 	
-	<!-- Directories & Files -->
+	<property name="author.name" value="Alfredo Mungo" />
+	
 	<property name="dir.src" location="src/" />
-	<property name="dir.build" location="build/" />
+	<property name="dir.bin" location="bin/" />
 	<property name="dir.meta" location="meta/" />
 	<property name="dir.dist" location="dist/" />
 	<property name="dir.doc" location="doc/" />
-	<property name="dir.lib" location="lib/" />
 	
-	<property name="file.jar.noext" location="${dir.dist}/${ant.project.name}-${version.number}" />
+	<property name="file.jar.noext" location="${dir.dist}/${project.name}-${project.version-short}" />
+	<property name="file.jar-debug" location="${file.jar.noext}-debug.jar" />
+	<property name="file.jar-release" location="${file.jar.noext}.jar" />
 	<property name="file.manifest" location="${dir.meta}/MANIFEST.MF" />
 	
-	<!-- Libraries -->
-	<property name="lib.testsuit.url" value="https://bitbucket.org/wisedevil/testsuit/downloads/testsuit-1.0.jar" />
-	<property name="lib.testsuit" location="${dir.lib}/testsuit-1.0.jar" />
+	<property name="javadoc.doctitle"><![CDATA[<header><h1>${project.name} ${project.version}</h1></header>]]></property>
 	
-	<target name="init" depends="-init-debug, -init-release" description="Initialize the build environment">
+	<target name="init" depends="-init-debug" description="Initialize the build environment">
 		<mkdir dir="${dir.meta}" />
-		<mkdir dir="${dir.build}" />
+		<mkdir dir="${dir.bin}" />
 		<mkdir dir="${dir.dist}" />
 		<mkdir dir="${dir.doc}" />
-		<mkdir dir="${dir.lib}" />
-		
-		<condition property="libs.available">
-			<and>
-				<available file="${lib.testsuit}" />
-			</and>
-		</condition>
 	</target>
 	
-	<target name="-init-debug" unless="release">
-		<echo message="WARNING: Debug mode enabled" />
-		
-		<property name="build.debug" value="true" />
-		<property name="file.jar" location="${file.jar.noext}-${version.phase}.jar" />
+	<target name="-init-debug" unless="build.release">
+		<echo message="Debug mode enabled" level="warning" />
 	</target>
-	
-	<target name="-init-release" if="release">
-		<property name="build.debug" value="false" />
-		<property name="file.jar" location="${file.jar.noext}.jar" />
-	</target>
-	
+
 	<target name="release" description="Enables release mode">
-		<property name="release" value="true" />
+		<property name="build.release" value="true" />
 	</target>
 	
-	<target name="-libs" unless="libs.available">
-		<get src="${lib.testsuit.url}" dest="${lib.testsuit}" />
-	</target>
-	
-	<target name="-taskdefs" depends="-libs">
-		<taskdef name="test" classname="wisedevil.test.EntryPoint" classpath="${lib.testsuit}" onerror="fail" />
-	</target>
-	
-	<target name="build" depends="init" description="Builds the java source files">
+	<target name="compile" depends="init, -compile-debug, -compile-release" description="Builds the java source files" />
+
+	<target name="-compile-debug" unless="build.release">
 		<javac
 			srcdir="${dir.src}"
-			destdir="${dir.build}"
+			destdir="${dir.bin}"
 			includeantruntime="false"
-			debug="${build.debug}"
-			debuglevel="lines,vars,source"
+			debug="true"
+			deprecation="true"
 		>
-			<compilerarg value="-Xlint" />
+			<compilerarg value="-Xlint:all" />
+			<compilerarg value="-Xdoclint:all" />
 		</javac>
+	</target>
+	
+	<target name="-compile-release" if="build.release">
+		<javac
+			srcdir="${dir.src}"
+			destdir="${dir.bin}"
+			includeantruntime="false"
+			debug="false"
+			deprecation="false"
+		/>
 	</target>
 	
 	<target name="manifest" depends="init" description="Generates the jar manifest">
@@ -76,35 +68,73 @@
 			<attribute name="Extension-Name" value="wisedevil.mvc" />
 			
 			<attribute name="Implementation-Title" value="Wisedevil MVC" />
-			<attribute name="Implementation-Version" value="${version.number}" />
-			<attribute name="Implementation-Vendor" value="wisedevil" />
+			<attribute name="Implementation-Version" value="${project.version-shortest}" />
+			<attribute name="Implementation-Vendor" value="${author.name}" />
 			
 			<attribute name="Specification-Title" value="Wisedevil MVC" />
-			<attribute name="Specification-Version" value="${version.number}" />
-			<attribute name="Specification-Vendor" value="wisedevil" />
+			<attribute name="Specification-Version" value="${project.version-shortest}" />
+			<attribute name="Specification-Vendor" value="${author.name}" />
 		</manifest>
 	</target>
 	
-	<target name="jar" depends="build, manifest" description="Creates the library jar file">
-		<jar basedir="${dir.build}" destfile="${file.jar}" manifest="${file.manifest}" index="true" excludes="**/package-info.class" />
+	<target name="jar" depends="compile, manifest, -jar-debug, -jar-release" description="Creates the library jar file" />
+	
+	<target name="-jar-debug" unless="build.release">
+		<jar
+			basedir="${dir.bin}"
+			destfile="${file.jar-debug}"
+			manifest="${file.manifest}"
+			index="true"
+			excludes="**/package-info.class"
+			compress="false"
+		/>
 	</target>
 	
-	<target name="distclean" description="Cleans any distribution files">
+	<target name="-jar-release" if="build.release">
+		<jar
+			basedir="${dir.bin}"
+			destfile="${file.jar-release}"
+			manifest="${file.manifest}"
+			index="true"
+			excludes="**/package-info.class"
+		/>
+	</target>
+	
+	<target name="distclean" description="Cleans distribution files">
 		<delete dir="${dir.dist}" />
 	</target>
 	
-	<target name="clean" depends="distclean" description="Cleans the build environment (but the downloaded libraries)">
-		<delete dir="${dir.build}" />
+	<target name="clean" depends="distclean" description="Cleans the build environment">
+		<delete dir="${dir.bin}" />
 		<delete dir="${dir.meta}" />
 		<delete dir="${dir.doc}" />
 	</target>
 	
-	<target name="libclean" description="Cleans the downloaded libraries">
-		<delete dir="${dir.lib}" />
+	<target name="javadoc" depends="init, -javadoc-debug, -javadoc-release" description="Creates the javadoc files" />
+	
+	<target name="-javadoc-debug" unless="build.release">
+		<javadoc
+			sourcepath="${dir.src}"
+			destdir="${dir.doc}"
+			access="private"
+			locale="en_US"
+		>
+			<package name="wisedevil.mvc.*" />
+			<doctitle>${javadoc.doctitle}</doctitle>
+		</javadoc>
 	</target>
 	
-	<target name="javadoc" depends="init" description="Creates the javadoc files">
-		<!-- TODO: Add tasks -->
+	<target name="-javadoc-release" if="build.release">
+		<javadoc
+			sourcepath="${dir.src}"
+			destdir="${dir.doc}"
+			access="protected"
+			locale="en_US"
+		>
+			<package name="wisedevil.mvc.*" />
+			<doctitle>${javadoc.doctitle}</doctitle>
+			<link href="http://docs.oracle.com/javase/8/docs/api/" />
+		</javadoc>
 	</target>
 	
 	<target name="jdepend" description="Analyzes the java sources with JDepend">
