@@ -77,7 +77,7 @@
 		</manifest>
 	</target>
 	
-	<target name="jar" depends="compile, manifest, -jar-debug, -jar-release" description="Creates the library jar file" />
+	<target name="jar" depends="compile, manifest, javadoc, -jar-debug, -jar-release" description="Creates the library jar file" />
 	
 	<target name="-jar-debug" unless="build.release">
 		<jar
