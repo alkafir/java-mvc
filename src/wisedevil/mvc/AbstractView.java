@@ -65,6 +65,8 @@ public abstract class AbstractView implements Observer, Viewable {
 	/**
 	 * This method is called whenever an instance of the model is updated.
 	 *
+	 * @param arg The updated model instance
+	 *
 	 * @see #update(java.util.Observable, Object)
 	 */
 	protected abstract void update(Object arg);
