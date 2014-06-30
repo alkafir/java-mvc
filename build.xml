@@ -98,6 +98,12 @@
 			index="true"
 			excludes="**/package-info.class"
 		/>
+		
+		<tar
+			destfile="${file.jar.noext}-docs.tar.gz"
+			basedir="${dir.doc}"
+			compression="gzip"
+		/>
 	</target>
 	
 	<target name="distclean" description="Cleans distribution files">
