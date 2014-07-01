@@ -89,7 +89,15 @@ public abstract class AbstractController<M extends AbstractModel> implements Obs
 	 *
 	 * @param v The view to associate with this controller
 	 */
-	void setView(AbstractView<M> v) { view = v; }
+	void setView(AbstractView<M> v) {
+		if(view != null)
+			disassociateView();
+			
+		view = v;
+		
+		if(view != null)
+			associateView();
+	}
 	
 	/**
 	 * This method is called whenever a model object is updated.
@@ -114,5 +122,15 @@ public abstract class AbstractController<M extends AbstractModel> implements Obs
 	 * @see #update(java.util.Observable, Object)
 	 */
 	protected abstract void update(Object arg);
+	
+	/**
+	 * This method is called whenever a new view has been associated (immediately after).
+	 */
+	protected abstract void associateView();
+	
+	/**
+	 * This method is called whenever the actual view is being disassociated (immediately before).
+	 */
+	protected abstract void disassociateView();
 }
 
