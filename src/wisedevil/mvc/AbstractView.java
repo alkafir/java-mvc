@@ -22,16 +22,11 @@ package wisedevil.mvc;
  *
  * @param <M> The model type which is going to be viewed
  */
-public abstract class AbstractView<M extends AbstractModel> implements Viewable {
+public abstract class AbstractView<M extends AbstractModel> {
 	/**
 	 * The associated controller object.
 	 */
 	private final AbstractController<M> controller;
-	
-	/**
-	 * A value representing the visibility of the object (defaults to <code>false</code>).
-	 */
-	private boolean visible = false;
 	
 	/**
 	 * Initialize a new instance of this class.
@@ -59,21 +54,5 @@ public abstract class AbstractView<M extends AbstractModel> implements Viewable 
 	 * @return The associated controller object
 	 */
 	public AbstractController<M> getController() { return controller; }
-	
-	/**
-	 * Sets the visibility of the view.
-	 *
-	 * <blockquote>This method only sets a visibility variable and thus should be overridden.</blockquote>
-	 *
-	 * @see Viewable#isVisible(boolean)
-	 */
-	public void isVisible(boolean v) {
-		visible = v;
-	}
-	
-	/**
-	 * @see Viewable#isVisible()
-	 */
-	public boolean isVisible() { return visible; }
 }
 
