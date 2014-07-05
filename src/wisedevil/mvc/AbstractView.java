@@ -19,14 +19,12 @@ package wisedevil.mvc;
 
 /**
  * This class represents a view object.
- *
- * @param <M> The model type which is going to be viewed
  */
-public abstract class AbstractView<M extends AbstractModel> {
+public abstract class AbstractView {
 	/**
 	 * The associated controller object.
 	 */
-	private final AbstractController<M> controller;
+	private final AbstractController controller;
 	
 	/**
 	 * Initialize a new instance of this class.
@@ -37,7 +35,7 @@ public abstract class AbstractView<M extends AbstractModel> {
 	 *
 	 * @throws NullPointerException if <code>c</code> is null
 	 */
-	protected AbstractView(AbstractController<M> c) {
+	protected AbstractView(AbstractController c) {
 		
 		if(c != null) {
 			// Set the controller
@@ -51,8 +49,10 @@ public abstract class AbstractView<M extends AbstractModel> {
 	/**
 	 * Returns the associated controller object.
 	 *
+	 * <blockquote>Implementations should override this method to return a more specific superclass of AbstractController.</blockquote>
+	 *
 	 * @return The associated controller object
 	 */
-	public AbstractController<M> getController() { return controller; }
+	public AbstractController getController() { return controller; }
 }
 

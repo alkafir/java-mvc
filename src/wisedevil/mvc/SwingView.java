@@ -23,7 +23,7 @@ import static javax.swing.SwingUtilities.invokeLater;
 /**
  * This class represents a view made of Swing components.
  */
-public abstract class SwingView<M extends AbstractModel> extends AbstractView<M> {
+public abstract class SwingView extends AbstractView {
 	/**
 	 * Initializes a new instance of this class.
 	 *
@@ -31,7 +31,7 @@ public abstract class SwingView<M extends AbstractModel> extends AbstractView<M>
 	 *
 	 * @throws NullPointerException if <code>c</code> is null
 	 */
-	public SwingView(AbstractController<M> c) {
+	public SwingView(AbstractController c) {
 		super(c);
 	}
 	

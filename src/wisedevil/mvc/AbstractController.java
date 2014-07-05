@@ -22,26 +22,24 @@ import java.util.Observable;
 
 /**
  * This class represents a controller object.
- *
- * @param <M> The model type which is going to be controlled
  */
-public abstract class AbstractController<M extends AbstractModel> implements Observer {
+public abstract class AbstractController implements Observer {
 	/**
 	 * The associated model.
 	 */
-	private M model;
+	private AbstractModel model;
 	
 	/**
 	 * The associated view.
 	 */
-	private AbstractView<M> view;
+	private AbstractView view;
 	
 	/**
 	 * Initializes a new instance of this class.
 	 *
 	 * @param model The associated model object.
 	 */
-	protected AbstractController(M model) {
+	protected AbstractController(AbstractModel model) {
 		this.model = model;
 		
 		// Register against the model for observation
@@ -51,23 +49,27 @@ public abstract class AbstractController<M extends AbstractModel> implements Obs
 	/**
 	 * Returns the associated view object.
 	 *
+	 * <blockquote>Implementations should override this method to return a more specific superclass of AbstractView.</blockquote>
+	 *
 	 * @return The associated view object
 	 */
-	public AbstractView<M> getView() { return view; }
+	public AbstractView getView() { return view; }
 	
 	/**
 	 * Returns the associated model object.
 	 *
+	 * <blockquote>Implementations should override this method to return a more specific superclass of AbstractModel.</blockquote>
+	 *
 	 * @return The associated model object
 	 */
-	public M getModel() { return model; }
+	public AbstractModel getModel() { return model; }
 	
 	/**
 	 * Sets a new model.
 	 *
 	 * @param model The new model
 	 */
-	 public void setModel(M model) {
+	 public void setModel(AbstractModel model) {
 		if(this.model != null)
 			this.model.deleteObserver(this);
 		
@@ -89,7 +91,7 @@ public abstract class AbstractController<M extends AbstractModel> implements Obs
 	 *
 	 * @param v The view to associate with this controller
 	 */
-	void setView(AbstractView<M> v) {
+	void setView(AbstractView v) {
 		if(view != null)
 			disassociateView();
 			
