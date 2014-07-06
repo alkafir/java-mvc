@@ -21,10 +21,12 @@ package wisedevil.mvc.msg;
  * Represents an update message from the view or model to the controller.
  *
  * <blockquote>Instances of this class are immutable.</blockquote>
+ *
+ * @param <T> The message source type (view or model)
  */
 public class Message<T> {
 	/**
-	 * The object source of the message (a model or view).
+	 * The object from which the message originates.
 	 */
 	private final T source;
 	
@@ -41,26 +43,22 @@ public class Message<T> {
 	/**
 	 * Initializes a new instance of this class.
 	 *
-	 * @param src The object source of the message (a model or view)
+	 * @param src The object from which the message originates
 	 * @param msg An application-dependent integer representation of the performed action
 	 * @param arg An optional application-dependent argument of the message
 	 *
 	 * @throws NullPointerException If the <code>src</code> parameter is null
 	 */
 	public Message(T src, int msg, Object arg) {
-	
-		if(src == null)
-			throw new NullPointerException();
-	
 		source = src;
 		message = msg;
 		argument = arg;
 	}
-	
+
 	/**
-	 * Returns the source object.
+	 * Returns the source of the message.
 	 *
-	 * @return The source of the message
+	 * @return The object from which the message originates
 	 */
 	public T getSource() { return source; }
 	

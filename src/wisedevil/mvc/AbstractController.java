@@ -17,13 +17,14 @@
  */
 package wisedevil.mvc;
 
-import java.util.Observer;
-import java.util.Observable;
+import wisedevil.mvc.msg.Message;
+import wisedevil.mvc.msg.ModelMessage;
+import wisedevil.mvc.msg.ViewMessage;
 
 /**
  * This class represents a controller object.
  */
-public abstract class AbstractController implements Observer {
+public abstract class AbstractController {
 	/**
 	 * The associated model.
 	 */
@@ -69,15 +70,15 @@ public abstract class AbstractController implements Observer {
 	 *
 	 * @param m The new model
 	 */
-	 public void setModel(AbstractModel m) {
+	public void setModel(AbstractModel m) {
 		if(model != null)
-			model.deleteObserver(this);
+			m.removeController(this);
 		
 		model = m;
 		
 		if(model != null)
-			model.addObserver(this);
-	 }
+			m.addController(this);
+	}
 	
 	/**
 	 * Returns whether the controller has an associated view or not.
@@ -92,37 +93,34 @@ public abstract class AbstractController implements Observer {
 	 * @param v The view to associate with this controller
 	 */
 	void setView(AbstractView v) {
-		if(view != null)
-			view.deleteObserver(this);
-		
 		view = v;
-		
-		if(view != null)
-			view.addObserver(this);
 	}
 	
 	/**
-	 * This method is called whenever a model object is updated.
+	 * This method is called whenever an instance of the model or view is updated.
 	 *
-	 * The general contract for this method is to call the <code>update(Object)</code> method whenever the associated model/view is updated.
-	 *
-	 * @see java.util.Observer#update(java.util.Observable, Object)
-	 * @see #update(Object)
+	 * @param <M> The source type (view or model)
+	 * @param msg The update message
 	 */
-	public void update(Observable o, Object arg) {
-		Class<? extends AbstractModel> cls = getModel().getClass();
-		
-		if(cls.isInstance(o))
-			update(arg);
+	<M> void update(Message<M> msg) {
+		if(msg instanceof ModelMessage)
+			modelUpdate((ModelMessage)msg);
+		else if(msg instanceof ViewMessage)
+			viewUpdate((ViewMessage)msg);
 	}
 	
 	/**
-	 * This method is called whenever an instance of the model is updated.
+	 * Called whenever a model update message is received.
 	 *
-	 * @param arg The updated object in the model instance
-	 *
-	 * @see #update(java.util.Observable, Object)
+	 * @param m The message sent by the model
 	 */
-	protected abstract void update(Object arg);
+	protected abstract void modelUpdate(ModelMessage m);
+	
+	/**
+	 * Called whenever a view update message is received.
+	 *
+	 * @param m The message sent by the view
+	 */
+	protected abstract void viewUpdate(ViewMessage m);
 }
 

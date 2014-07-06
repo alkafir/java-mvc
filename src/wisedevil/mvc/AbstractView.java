@@ -17,12 +17,12 @@
  */
 package wisedevil.mvc;
 
-import java.util.Observable;
+import wisedevil.mvc.msg.ViewMessage;
 
 /**
  * This class represents a view object.
  */
-public abstract class AbstractView extends Observable {
+public abstract class AbstractView {
 	/**
 	 * The associated controller object.
 	 */
@@ -57,5 +57,15 @@ public abstract class AbstractView extends Observable {
 	 * @return The associated controller object
 	 */
 	public AbstractController getController() { return controller; }
+	
+	/**
+	 * Notifies the controller that this view has been updated.
+	 *
+	 * @param msg An application-dependent integer representation of the performed action
+	 * @param arg An optional application-dependent argument of the message
+	 */
+	protected void notifyUpdate(int msg, Object arg) {
+		getController().update(new ViewMessage(this, msg, arg));
+	}
 }
 

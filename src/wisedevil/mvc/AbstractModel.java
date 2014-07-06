@@ -17,17 +17,54 @@
  */
 package wisedevil.mvc;
 
-import java.util.Observable;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import wisedevil.mvc.msg.ModelMessage;
 
 /**
  * This class represents a model object.
  */
-public abstract class AbstractModel extends Observable {
+public abstract class AbstractModel {
+	/**
+	 * The set of controllers using this model.
+	 */
+	private Set<AbstractController> ctrls; // Controllers
+	
 	/**
 	 * Initializes a new instance of this class.
 	 */
 	public AbstractModel() {
-		super();
+		ctrls = new LinkedHashSet<AbstractController>();
+	}
+	
+	/**
+	 * Adds a controller for update notification.
+	 *
+	 * @param c The controller
+	 */
+	void addController(AbstractController c) {
+		ctrls.add(c);
+	}
+	
+	/**
+	 * Removes a controller from the set of update-notified controllers.
+	 *
+	 * @param c The controller
+	 */
+	void removeController(AbstractController c) {
+		ctrls.remove(c);
+	}
+	
+	/**
+	 * Notifies the controller that this model has been updated.
+	 *
+	 * @param msg An application-dependent integer representation of the performed action
+	 * @param arg An optional application-dependent argument of the message
+	 */
+	protected void notifyUpdate(int msg, Object arg) {
+		for(AbstractController c: ctrls)
+			c.update(new ModelMessage(this, msg, arg));
 	}
 }
 
