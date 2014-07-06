@@ -1,5 +1,5 @@
 /*
- * Wisedevil's MVC: MVC library for the Java platform
+ * Coffin: Credentials manager application
  *    Copyright (C) 2014  Alfredo Mungo
  *
  *    This program is free software: you can redistribute it and/or modify
@@ -15,19 +15,27 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package wisedevil.mvc;
+package wisedevil.mvc.msg;
 
-import java.util.Observable;
+import wisedevil.mvc.AbstractModel;
 
 /**
- * This class represents a model object.
+ * Represents an update message from the view to the controller.
+ *
+ * <blockquote>Instances of this class are immutable.</blockquote>
  */
-public abstract class AbstractModel extends Observable {
+public class ModelMessage extends Message<AbstractModel> {
+
 	/**
 	 * Initializes a new instance of this class.
+	 *
+	 * @param src The model source of the message
+	 * @param msg An application-dependent integer representation of the performed action
+	 * @param arg An optional application-dependent argument of the message
+	 *
+	 * @throws NullPointerException If the <code>src</code> parameter is null
 	 */
-	public AbstractModel() {
-		super();
+	public ModelMessage(AbstractModel src, int msg, Object arg) {
+		super(src, msg, arg);
 	}
 }
-
