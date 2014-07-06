@@ -67,13 +67,13 @@ public abstract class AbstractController implements Observer {
 	/**
 	 * Sets a new model.
 	 *
-	 * @param model The new model
+	 * @param m The new model
 	 */
-	 public void setModel(AbstractModel model) {
-		if(this.model != null)
-			this.model.deleteObserver(this);
+	 public void setModel(AbstractModel m) {
+		if(model != null)
+			model.deleteObserver(this);
 		
-		this.model = model;
+		model = m;
 		
 		if(model != null)
 			model.addObserver(this);
@@ -93,18 +93,18 @@ public abstract class AbstractController implements Observer {
 	 */
 	void setView(AbstractView v) {
 		if(view != null)
-			disassociateView();
-			
+			view.deleteObserver(this);
+		
 		view = v;
 		
 		if(view != null)
-			associateView();
+			view.addObserver(this);
 	}
 	
 	/**
 	 * This method is called whenever a model object is updated.
 	 *
-	 * The general contract for this method is to call the <code>update(Object)</code> method whenever an object (of the class of the associated controller's model) is updated.
+	 * The general contract for this method is to call the <code>update(Object)</code> method whenever the associated model/view is updated.
 	 *
 	 * @see java.util.Observer#update(java.util.Observable, Object)
 	 * @see #update(Object)
@@ -124,15 +124,5 @@ public abstract class AbstractController implements Observer {
 	 * @see #update(java.util.Observable, Object)
 	 */
 	protected abstract void update(Object arg);
-	
-	/**
-	 * This method is called whenever a new view has been associated (immediately after).
-	 */
-	protected abstract void associateView();
-	
-	/**
-	 * This method is called whenever the actual view is being disassociated (immediately before).
-	 */
-	protected abstract void disassociateView();
 }
 

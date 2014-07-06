@@ -17,10 +17,12 @@
  */
 package wisedevil.mvc;
 
+import java.util.Observable;
+
 /**
  * This class represents a view object.
  */
-public abstract class AbstractView {
+public abstract class AbstractView extends Observable {
 	/**
 	 * The associated controller object.
 	 */
@@ -36,6 +38,7 @@ public abstract class AbstractView {
 	 * @throws NullPointerException if <code>c</code> is null
 	 */
 	protected AbstractView(AbstractController c) {
+		super();
 		
 		if(c != null) {
 			// Set the controller
