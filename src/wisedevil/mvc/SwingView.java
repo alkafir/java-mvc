@@ -17,6 +17,10 @@
  */
 package wisedevil.mvc;
 
+import java.awt.Component;
+
+import javax.swing.JOptionPane;
+
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -45,5 +49,44 @@ public abstract class SwingView extends AbstractView {
 			code.run();
 		else
 			invokeLater(code);
+	}
+	
+	/**
+	 * Shows a warning message.
+	 *
+	 * @param parent The parent of the JOptionPane that will pop-up
+	 * @param message The message to display
+	 * @param title The title of the message
+	 *
+	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
+	 */
+	protected void showWarning(Component parent, Object message, String title) {
+		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE);
+	}
+	
+	/**
+	 * Shows an error message.
+	 *
+	 * @param parent The parent of the JOptionPane that will pop-up
+	 * @param message The message to display
+	 * @param title The title of the message
+	 *
+	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
+	 */
+	protected void showError(Component parent, Object message, String title) {
+		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Shows an information message.
+	 *
+	 * @param parent The parent of the JOptionPane that will pop-up
+	 * @param message The message to display
+	 * @param title The title of the message
+	 *
+	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
+	 */
+	protected void showInformation(Component parent, Object message, String title) {
+		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
