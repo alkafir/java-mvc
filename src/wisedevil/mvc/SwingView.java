@@ -61,7 +61,7 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showWarning(Component parent, Object message, String title) {
-		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE);
+		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE));
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showError(Component parent, Object message, String title) {
-		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
+		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE));
 	}
 	
 	/**
@@ -87,6 +87,6 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showInformation(Component parent, Object message, String title) {
-		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
+		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE));
 	}
 }
