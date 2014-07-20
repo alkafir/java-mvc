@@ -67,5 +67,10 @@ public abstract class AbstractView {
 	protected void notifyUpdate(int msg, Object arg) {
 		getController().update(new ViewMessage(this, msg, arg));
 	}
+	
+	/**
+	 * Disposes of the view.
+	 */
+	public abstract void dispose();
 }
 

@@ -66,5 +66,10 @@ public abstract class AbstractModel {
 		for(AbstractController c: ctrls)
 			c.update(new ModelMessage(this, msg, arg));
 	}
+	
+	/**
+	 * Disposes of the model.
+	 */
+	public abstract void dispose();
 }
 

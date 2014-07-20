@@ -68,7 +68,7 @@ public abstract class AbstractController {
 	/**
 	 * Sets a new model.
 	 *
-	 * @param m The new model
+	 * @param m The new model (<code>null</code> to unset)
 	 */
 	public void setModel(AbstractModel m) {
 		if(model != null)
@@ -122,5 +122,14 @@ public abstract class AbstractController {
 	 * @param m The message sent by the view
 	 */
 	protected abstract void viewUpdate(ViewMessage m);
+	
+	/**
+	 * Disposes of the controller.
+	 *
+	 * <blockquote>Currently this method is an alias to <code>setModel(null)</code> but this may change in future releases.</blockquote>
+	 */
+	public void dispose() {
+		setModel(null);
+	}
 }
 
