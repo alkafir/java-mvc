@@ -50,16 +50,12 @@ public abstract class AbstractController {
 	/**
 	 * Returns the associated view object.
 	 *
-	 * <blockquote>Implementations should override this method to return a more specific superclass of AbstractView.</blockquote>
-	 *
 	 * @return The associated view object
 	 */
 	public AbstractView getView() { return view; }
 	
 	/**
 	 * Returns the associated model object.
-	 *
-	 * <blockquote>Implementations should override this method to return a more specific superclass of AbstractModel.</blockquote>
 	 *
 	 * @return The associated model object
 	 */
