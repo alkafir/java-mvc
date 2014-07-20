@@ -17,10 +17,6 @@
  */
 package wisedevil.mvc;
 
-import wisedevil.mvc.msg.Message;
-import wisedevil.mvc.msg.ModelMessage;
-import wisedevil.mvc.msg.ViewMessage;
-
 /**
  * This class represents a controller object.
  */
@@ -66,7 +62,7 @@ public abstract class AbstractController {
 	 *
 	 * @param m The new model (<code>null</code> to unset)
 	 */
-	private void setModel(AbstractModel m) {
+	protected void setModel(AbstractModel m) {
 		if(model != null)
 			m.removeController(this);
 		
@@ -93,31 +89,11 @@ public abstract class AbstractController {
 	}
 	
 	/**
-	 * This method is called whenever an instance of the model or view is updated.
+	 * This method is called whenever a message is received by the controller.
 	 *
-	 * @param <M> The source type (view or model)
 	 * @param msg The update message
 	 */
-	<M> void update(Message<M> msg) {
-		if(msg instanceof ModelMessage)
-			modelUpdate((ModelMessage)msg);
-		else if(msg instanceof ViewMessage)
-			viewUpdate((ViewMessage)msg);
-	}
-	
-	/**
-	 * Called whenever a model update message is received.
-	 *
-	 * @param m The message sent by the model
-	 */
-	protected abstract void modelUpdate(ModelMessage m);
-	
-	/**
-	 * Called whenever a view update message is received.
-	 *
-	 * @param m The message sent by the view
-	 */
-	protected abstract void viewUpdate(ViewMessage m);
+	protected abstract void update(Message msg);
 	
 	/**
 	 * Disposes of the controller.

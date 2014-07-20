@@ -15,27 +15,37 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package wisedevil.mvc.msg;
-
-import wisedevil.mvc.AbstractView;
+package wisedevil.mvc;
 
 /**
- * Represents an update message from the view to the controller.
+ * Represents an update message from the view or model to the controller.
  *
- * <blockquote>Instances of this class are immutable.</blockquote>
+ * <blockquote>Instances of this class are immutable. Subclasses should instantiate immutable objects too.</blockquote>
  */
-public class ViewMessage extends Message<AbstractView> {
-
+public abstract class Message {
+	/**
+	 * The object from which the message originates.
+	 */
+	private final Object source;
+	
 	/**
 	 * Initializes a new instance of this class.
 	 *
-	 * @param src The view source of the message
-	 * @param msg An application-dependent integer representation of the performed action
-	 * @param arg An optional application-dependent argument of the message
+	 * @param src The object from which the message originates
 	 *
 	 * @throws NullPointerException If the <code>src</code> parameter is null
 	 */
-	public ViewMessage(AbstractView src, int msg, Object arg) {
-		super(src, msg, arg);
+	protected Message(Object src) {
+		if(src == null)
+			throw new NullPointerException();
+		
+		source = src;
 	}
+
+	/**
+	 * Returns the source of the message.
+	 *
+	 * @return The object from which the message originates
+	 */
+	public Object getSource() { return source; }
 }

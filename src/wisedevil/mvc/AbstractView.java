@@ -17,8 +17,6 @@
  */
 package wisedevil.mvc;
 
-import wisedevil.mvc.msg.ViewMessage;
-
 /**
  * This class represents a view object.
  */
@@ -61,11 +59,10 @@ public abstract class AbstractView {
 	/**
 	 * Notifies the controller that this view has been updated.
 	 *
-	 * @param msg An application-dependent integer representation of the performed action
-	 * @param arg An optional application-dependent argument of the message
+	 * @param msg An application-dependent representation of the performed action
 	 */
-	protected void notifyUpdate(int msg, Object arg) {
-		getController().update(new ViewMessage(this, msg, arg));
+	protected void notifyUpdate(Message msg) {
+		getController().update(msg);
 	}
 	
 	/**

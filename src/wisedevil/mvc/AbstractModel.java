@@ -20,8 +20,6 @@ package wisedevil.mvc;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import wisedevil.mvc.msg.ModelMessage;
-
 /**
  * This class represents a model object.
  */
@@ -59,12 +57,11 @@ public abstract class AbstractModel {
 	/**
 	 * Notifies the controller that this model has been updated.
 	 *
-	 * @param msg An application-dependent integer representation of the performed action
-	 * @param arg An optional application-dependent argument of the message
+	 * @param msg An application-dependent representation of the performed action
 	 */
-	protected void notifyUpdate(int msg, Object arg) {
+	protected void notifyUpdate(Message msg) {
 		for(AbstractController c: ctrls)
-			c.update(new ModelMessage(this, msg, arg));
+			c.update(msg);
 	}
 	
 	/**
