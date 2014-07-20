@@ -70,7 +70,7 @@ public abstract class AbstractController {
 	 *
 	 * @param m The new model (<code>null</code> to unset)
 	 */
-	public void setModel(AbstractModel m) {
+	private void setModel(AbstractModel m) {
 		if(model != null)
 			m.removeController(this);
 		
@@ -125,8 +125,6 @@ public abstract class AbstractController {
 	
 	/**
 	 * Disposes of the controller.
-	 *
-	 * <blockquote>Currently this method is an alias to <code>setModel(null)</code> but this may change in future releases.</blockquote>
 	 */
 	public void dispose() {
 		setModel(null);
