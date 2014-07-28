@@ -45,10 +45,7 @@ public abstract class SwingView extends AbstractView {
 	 * @param code The chunk of code to run
 	 */
 	protected void runViewCode(Runnable code) {
-		if(isEventDispatchThread())
-			code.run();
-		else
-			invokeLater(code);
+		invokeLater(code);
 	}
 	
 	/**
