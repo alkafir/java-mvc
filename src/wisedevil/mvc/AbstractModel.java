@@ -55,7 +55,7 @@ public abstract class AbstractModel {
 	}
 	
 	/**
-	 * Notifies the controller that this model has been updated.
+	 * Notifies the controllers that this model has been updated.
 	 *
 	 * @param msg An application-dependent representation of the performed action
 	 */
