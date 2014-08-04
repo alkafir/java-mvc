@@ -40,15 +40,6 @@ public abstract class SwingView extends AbstractView {
 	}
 	
 	/**
-	 * Runs a chunk of code in the EDT.
-	 *
-	 * @param code The chunk of code to run
-	 */
-	protected void runViewCode(Runnable code) {
-		invokeLater(code);
-	}
-	
-	/**
 	 * Shows a warning message.
 	 *
 	 * @param parent The parent of the JOptionPane that will pop-up
@@ -58,7 +49,12 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showWarning(Component parent, Object message, String title) {
-		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE));
+		final Runnable r = () -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.WARNING_MESSAGE);
+		
+		if(isEventDispatchThread())
+			r.run();
+		else
+			invokeLater(r);
 	}
 	
 	/**
@@ -71,7 +67,12 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showError(Component parent, Object message, String title) {
-		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE));
+		final Runnable r = () -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
+		
+		if(isEventDispatchThread())
+			r.run();
+		else
+			invokeLater(r);
 	}
 	
 	/**
@@ -84,6 +85,11 @@ public abstract class SwingView extends AbstractView {
 	 * @throws java.awt.HeadlessException If GraphicsEnvironment.isHeadless returns true
 	 */
 	protected void showInformation(Component parent, Object message, String title) {
-		runViewCode(() -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE));
+		final Runnable r = () -> JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
+		
+		if(isEventDispatchThread())
+			r.run();
+		else
+			invokeLater(r);
 	}
 }
